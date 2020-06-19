@@ -2,6 +2,7 @@ package com.myrran.springtest.web;
 
 import com.myrran.springtest.model.Group;
 import com.myrran.springtest.model.GroupRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,11 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 class GroupController
 {
-    private final Logger log = LoggerFactory.getLogger(GroupController.class);
     private GroupRepository groupRepository;
 
     public GroupController(GroupRepository groupRepository)
