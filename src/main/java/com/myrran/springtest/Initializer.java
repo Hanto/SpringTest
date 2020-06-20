@@ -3,7 +3,9 @@ package com.myrran.springtest;
 import com.myrran.springtest.model.Event;
 import com.myrran.springtest.model.Group;
 import com.myrran.springtest.model.GroupRepository;
+import com.myrran.springtest.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,21 +19,27 @@ class Initializer implements CommandLineRunner
 {
     private final GroupRepository repository;
 
-    public Initializer(GroupRepository repository)
-    {   this.repository = repository; }
+    // BUILDER:
+    //--------------------------------------------------------------------------------------------------------
+
+    @Autowired public Initializer(GroupRepository repository)
+    {   this.repository = repository;}
+
+    // MAIN:
+    //--------------------------------------------------------------------------------------------------------
 
     @Override public void run(String... strings)
     {
         Stream.of(
-            "Denver JUG",
-            "Utah JUG",
-            "Seattle JUG",
-            "Richmond JUG")
+            "Johana",
+            "Pingüa",
+            "PajaringUa",
+            "Hulka")
             .forEach(name -> repository.save(new Group(name)));
 
         log.info("Ivan");
 
-        Group djug = repository.findByName("Denver JUG");
+        Group djug = repository.findByName("Johana");
 
         Event e = Event.builder().
             title("Full Stack Reactive")
