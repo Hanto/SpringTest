@@ -1,19 +1,28 @@
 package com.myrran.springtest;
 
+import com.myrran.springtest.config.AppProperties;
 import com.myrran.springtest.model.Group;
 import com.myrran.springtest.model.User;
 import com.myrran.springtest.model.dtos.GroupDTO;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.ui.ModelMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-//@SpringBootTest
+@SpringBootTest
 class SpringtestApplicationTests
 {
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Autowired
+	private AppProperties properties;
+
 	@Test void contextLoads()
 	{
 		User user = new User();
@@ -27,8 +36,6 @@ class SpringtestApplicationTests
 		group.setName("Nutri Group");
 		group.setUser(user);
 
-		ModelMapper modelMapper = new ModelMapper();
-
 		GroupDTO dto = modelMapper.map(group, GroupDTO.class);
 
 		System.out.println(dto.getUser().getName());
@@ -38,5 +45,8 @@ class SpringtestApplicationTests
 		Group group2 = modelMapper.map(dto, Group.class);
 
 		System.out.println(group2.getName());
+
+
+		System.out.println("ENV: "+ properties.getEnvironment());
 	}
 }

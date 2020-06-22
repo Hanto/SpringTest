@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 class GroupController
 {
     private final GroupRepository groupRepository;
+    private @Autowired ModelMapper modelMapper;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
@@ -87,14 +88,8 @@ class GroupController
     //--------------------------------------------------------------------------------------------------------
 
     private GroupDTO fromGroupToGroupDTO(Group group)
-    {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(group, GroupDTO.class);
-    }
+    {   return modelMapper.map(group, GroupDTO.class); }
 
     private Group fromGroupDTOtoGroup(GroupDTO dto)
-    {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(dto, Group.class);
-    }
+    {   return modelMapper.map(dto, Group.class); }
 }
