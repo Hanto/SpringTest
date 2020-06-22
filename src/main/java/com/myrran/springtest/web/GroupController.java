@@ -57,7 +57,7 @@ class GroupController
             .body(result);
     }
 
-    @PutMapping("/group/{id}")
+    @PutMapping("/group")
     ResponseEntity<Group> updateGroup(@Validated @RequestBody Group group)
     {
         log.info("Request to update group: {}", group);
