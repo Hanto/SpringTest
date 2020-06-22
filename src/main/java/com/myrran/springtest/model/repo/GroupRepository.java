@@ -1,7 +1,7 @@
-package com.myrran.springtest.model;
+package com.myrran.springtest.model.repo;
 
+import com.myrran.springtest.model.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 
 public interface GroupRepository extends JpaRepository<Group, Long>
 {

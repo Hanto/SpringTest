@@ -2,8 +2,7 @@ package com.myrran.springtest;
 
 import com.myrran.springtest.model.Event;
 import com.myrran.springtest.model.Group;
-import com.myrran.springtest.model.GroupRepository;
-import com.myrran.springtest.model.User;
+import com.myrran.springtest.model.repo.GroupRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -35,7 +34,11 @@ class Initializer implements CommandLineRunner
             "Pingüa",
             "PajaringUa",
             "Hulka")
-            .forEach(name -> repository.save(new Group(name)));
+            .forEach(name -> repository.save(
+                Group.builder()
+                .name(name)
+                .build()
+            ));
 
         log.info("Ivan");
 

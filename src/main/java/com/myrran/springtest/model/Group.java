@@ -1,20 +1,15 @@
 package com.myrran.springtest.model;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@NoArgsConstructor @RequiredArgsConstructor @Data
+@AllArgsConstructor @NoArgsConstructor @Builder @Data
 @Entity @Table(name = "user_group")
 public class Group
 {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
-    @NonNull
     private String name;
     private String address;
     private String city;
