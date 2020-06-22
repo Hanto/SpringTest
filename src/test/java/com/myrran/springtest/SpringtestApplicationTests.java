@@ -17,11 +17,8 @@ import javax.persistence.Persistence;
 @SpringBootTest
 class SpringtestApplicationTests
 {
-	@Autowired
-	private ModelMapper modelMapper;
-
-	@Autowired
-	private AppProperties properties;
+	private @Autowired ModelMapper modelMapper;
+	private @Autowired AppProperties properties;
 
 	@Test void contextLoads()
 	{

@@ -52,6 +52,6 @@ class Initializer implements CommandLineRunner
 
         djug.setEvents(Collections.singleton(e));
         repository.save(djug);
-        repository.findAll().forEach(System.out::println);
+        repository.findAll().forEach(group ->  log.info("Group Created: " + group.toString()));
     }
 }
