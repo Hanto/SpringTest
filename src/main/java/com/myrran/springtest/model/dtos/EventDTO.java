@@ -1,9 +1,9 @@
 package com.myrran.springtest.model.dtos;
-import com.myrran.springtest.model.User;
-import lombok.*;
-import lombok.experimental.Accessors;
 
-import javax.persistence.ManyToMany;
+import com.myrran.springtest.model.User;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.Instant;
 import java.util.Set;
 
