@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Data
 @Configuration
-@PropertySource(value = {"classpath:${properties}"})
+@PropertySource(value = {"classpath:${spring.profiles.active}.properties"})
 public class AppProperties
 {
     @Value("${environment}")

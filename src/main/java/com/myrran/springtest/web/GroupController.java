@@ -46,7 +46,7 @@ class GroupController
     @GetMapping("/group/{id}")
     ResponseEntity<?> getGroup(@PathVariable Long id)
     {
-        log.info("Request to submit group with the id: %s", id);
+        log.info("Request to submit group with the id: {}", id);
         Optional<Group> group = groupRepository.findById(id);
 
         return group
