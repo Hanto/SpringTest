@@ -30,6 +30,6 @@ class Startup implements CommandLineRunner
 
     @Override public void run(String... strings)
     {
-
+        log.info("Startup");
     }
 }
