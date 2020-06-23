@@ -20,7 +20,6 @@ class SpringtestApplicationTests
         User user = new User();
         user.setName("Johana");
 
-
         Group group = new Group();
         group.setAddress("Obispo");
         group.setCity("Valencia");
@@ -40,5 +39,7 @@ class SpringtestApplicationTests
 
 
         System.out.println("ENV: "+ properties.getEnvironment());
+
+
     }
 }
