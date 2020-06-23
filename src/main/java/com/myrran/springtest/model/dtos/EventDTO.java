@@ -1,5 +1,4 @@
 package com.myrran.springtest.model.dtos;
-
 import com.myrran.springtest.model.User;
 import lombok.*;
 import lombok.experimental.Accessors;

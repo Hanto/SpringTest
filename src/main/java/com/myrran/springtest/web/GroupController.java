@@ -1,5 +1,4 @@
 package com.myrran.springtest.web;
-
 import com.myrran.springtest.model.Group;
 import com.myrran.springtest.model.repo.GroupRepository;
 import com.myrran.springtest.model.dtos.GroupDTO;

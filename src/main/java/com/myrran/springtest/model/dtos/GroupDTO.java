@@ -1,8 +1,5 @@
 package com.myrran.springtest.model.dtos;
-
 import lombok.*;
-import lombok.experimental.Accessors;
-
 import java.util.Set;
 
 @NoArgsConstructor @Data
