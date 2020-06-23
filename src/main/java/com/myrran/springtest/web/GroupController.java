@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 class GroupController
 {
     private final GroupRepository groupRepository;
-    private @Autowired ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    @Autowired public GroupController(GroupRepository groupRepository)
-    {   this.groupRepository = groupRepository; }
+    public @Autowired GroupController(GroupRepository groupRepository, ModelMapper modelMapper)
+    {   this.groupRepository = groupRepository; this.modelMapper = modelMapper; }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -36,14 +36,17 @@ class GroupController
     @GetMapping("/groups")
     Collection<GroupDTO> groups()
     {
+        log.info("Request to submit all groups");
+
         return groupRepository.findAll().stream()
-            .map(this::fromGroupToGroupDTO)
+            .map(this::groupToDTO)
             .collect(Collectors.toList());
     }
 
     @GetMapping("/group/{id}")
     ResponseEntity<?> getGroup(@PathVariable Long id)
     {
+        log.info("Request to submit group with the id: %s", id);
         Optional<Group> group = groupRepository.findById(id);
 
         return group
@@ -55,22 +58,22 @@ class GroupController
     ResponseEntity<GroupDTO> createGroup(@Validated @RequestBody GroupDTO groupDTO) throws URISyntaxException
     {
         log.info("Request to create group: {}", groupDTO);
-        Group result = groupRepository.save(fromGroupDTOtoGroup(groupDTO));
+        Group result = groupRepository.save(dtoToGroup(groupDTO));
 
         return ResponseEntity
             .created(new URI("/api/group/" + result.getId()))
-            .body(fromGroupToGroupDTO(result));
+            .body(groupToDTO(result));
     }
 
     @PutMapping("/group")
     ResponseEntity<GroupDTO> updateGroup(@Validated @RequestBody GroupDTO groupDTO)
     {
         log.info("Request to update group: {}", groupDTO);
-        Group result = groupRepository.save(fromGroupDTOtoGroup(groupDTO));
+        Group result = groupRepository.save(dtoToGroup(groupDTO));
 
         return ResponseEntity
             .ok()
-            .body(fromGroupToGroupDTO(result));
+            .body(groupToDTO(result));
     }
 
     @DeleteMapping("/group/{id}")
@@ -87,9 +90,9 @@ class GroupController
     // HELPER:
     //--------------------------------------------------------------------------------------------------------
 
-    private GroupDTO fromGroupToGroupDTO(Group group)
+    private GroupDTO groupToDTO(Group group)
     {   return modelMapper.map(group, GroupDTO.class); }
 
-    private Group fromGroupDTOtoGroup(GroupDTO dto)
+    private Group dtoToGroup(GroupDTO dto)
     {   return modelMapper.map(dto, Group.class); }
 }

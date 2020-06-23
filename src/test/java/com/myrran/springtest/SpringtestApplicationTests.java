@@ -17,33 +17,33 @@ import javax.persistence.Persistence;
 @SpringBootTest
 class SpringtestApplicationTests
 {
-	private @Autowired ModelMapper modelMapper;
-	private @Autowired AppProperties properties;
+    private @Autowired ModelMapper modelMapper;
+    private @Autowired AppProperties properties;
 
-	@Test void contextLoads()
-	{
-		User user = new User();
-		user.setName("Johana");
-
-
-		Group group = new Group();
-		group.setAddress("Obispo");
-		group.setCity("Valencia");
-		group.setCountry("Spain");
-		group.setName("Nutri Group");
-		group.setUser(user);
-
-		GroupDTO dto = modelMapper.map(group, GroupDTO.class);
-
-		System.out.println(dto.getUser().getName());
-		System.out.println(dto.getUser().getId());
+    @Test void contextLoads()
+    {
+        User user = new User();
+        user.setName("Johana");
 
 
-		Group group2 = modelMapper.map(dto, Group.class);
+        Group group = new Group();
+        group.setAddress("Obispo");
+        group.setCity("Valencia");
+        group.setCountry("Spain");
+        group.setName("Nutri Group");
+        group.setUser(user);
 
-		System.out.println(group2.getName());
+        GroupDTO dto = modelMapper.map(group, GroupDTO.class);
+
+        System.out.println(dto.getUser().getName());
+        System.out.println(dto.getUser().getId());
 
 
-		System.out.println("ENV: "+ properties.getEnvironment());
-	}
+        Group group2 = modelMapper.map(dto, Group.class);
+
+        System.out.println(group2.getName());
+
+
+        System.out.println("ENV: "+ properties.getEnvironment());
+    }
 }
