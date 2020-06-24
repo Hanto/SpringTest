@@ -7,5 +7,5 @@ import java.util.Collection;
 
 public interface UsersRepository extends JpaRepository<Users, Long>
 {
-    Collection<Users> findByName(String name);
+    Collection<Users> findByUsername(String name);
 }

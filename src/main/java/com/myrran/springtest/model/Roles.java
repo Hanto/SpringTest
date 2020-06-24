@@ -10,7 +10,7 @@ import java.util.Set;
 
 //circular dependencies should be excluded from ToString & HashCodes
 @Data @EqualsAndHashCode(exclude = "users") @ToString(exclude = "users")
-@Entity
+@Entity @Table (name = "Authorities")
 public class Roles
 {
     @Id @GeneratedValue

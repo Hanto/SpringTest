@@ -30,7 +30,7 @@ class SpringtestApplicationTests
     @Test void contextLoads()
     {
         Users user = new Users();
-        user.setName("ivan");
+        user.setUsername("ivan");
         user.setPassword("1131");
 
         Roles rol = new Roles();
@@ -41,7 +41,7 @@ class SpringtestApplicationTests
         usersRepository.save(user);
         rolesRepository.save(rol); // not necessary with cascade persist/merge
 
-        Collection<Users> userResult = usersRepository.findByName("ivan");
+        Collection<Users> userResult = usersRepository.findByUsername("ivan");
         Collection<Roles> rolResult = rolesRepository.findByAuthority("Admin");
 
         System.out.println("done");
@@ -53,7 +53,7 @@ class SpringtestApplicationTests
 
         usersRepository.delete(deletedUser);
 
-        userResult = usersRepository.findByName("ivan");
+        userResult = usersRepository.findByUsername("ivan");
 
         System.out.println("done");
     }

@@ -1,25 +1,29 @@
 package com.myrran.springtest.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-//circular dependencies should be excluded from ToString & HashCodes
-@Data @EqualsAndHashCode(exclude = "roles") @ToString(exclude = "roles")
-@Entity
+@Data
+@Entity @Table (name = "Users")
 public class Users
 {
     @Id @GeneratedValue
     private Long id;
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String username;
     private String password;
     private boolean enabled;
     // if joining table not specified, it automatically generates it
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable
+    (
+        name = "user_roles",
+        joinColumns = { @JoinColumn(name = "fk_user") },
+        inverseJoinColumns = { @JoinColumn(name = "fk_rol") }
+    )
     private final Set<Roles> roles = new HashSet<>();
 
     // MAIN:

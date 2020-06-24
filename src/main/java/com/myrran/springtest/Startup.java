@@ -1,24 +1,32 @@
 package com.myrran.springtest;
 
-import com.myrran.springtest.model.repo.GroupRepository;
+import com.myrran.springtest.model.Roles;
+import com.myrran.springtest.model.Users;
+import com.myrran.springtest.model.repo.RolesRepository;
+import com.myrran.springtest.model.repo.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collection;
 
 @Slf4j
 @Component
 class Startup implements CommandLineRunner
 {
-    private final GroupRepository repository;
+    private final UsersRepository usersRepo;
+    private final RolesRepository rolesRepo;
     private @Autowired RestTemplate restTemplate;
+    private @Autowired PasswordEncoder encoder;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    @Autowired public Startup(GroupRepository repository)
-    {   this.repository = repository;}
+    @Autowired public Startup(UsersRepository userRepo, RolesRepository rolesRepo)
+    {   this.usersRepo = userRepo; this.rolesRepo = rolesRepo; }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -39,5 +47,28 @@ class Startup implements CommandLineRunner
         Object object = restTemplate.getForObject(translate, String.class);
 
         log.info("OBJECT: {}", object);
+
+        initAdmin();
+    }
+
+    public void initAdmin()
+    {
+        Collection<Users> user = usersRepo.findByUsername("Admin");
+        Collection<Roles> role = rolesRepo.findByAuthority("ADMIN");
+
+        if (role.isEmpty() && user.isEmpty())
+        {
+            Roles adminRol = new Roles();
+            adminRol.setAuthority("ADMIN");
+            //adminRol = rolesRepo.save(adminRol);
+
+            Users adminUser = new Users();
+            adminUser.setEnabled(true);
+            adminUser.setUsername("admin");
+            adminUser.setPassword(encoder.encode("admin"));
+            adminUser.addRol(adminRol);
+            usersRepo.save(adminUser);
+        }
+
     }
 }
