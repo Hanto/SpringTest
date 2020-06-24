@@ -17,7 +17,7 @@ public class Users
     private String password;
     private boolean enabled;
     // if joining table not specified, it automatically generates it
-    @ManyToMany//(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(fetch = FetchType.EAGER)//(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable
     (
         name = "user_roles",
@@ -32,12 +32,12 @@ public class Users
     public void addRol(Roles rol)
     {
         roles.add(rol);
-        rol.getUsers().add(this);
+        //rol.getUsers().add(this);
     }
 
     public void removeRol(Roles rol)
     {
         roles.remove(rol);
-        rol.getUsers().remove(this);
+        //rol.getUsers().remove(this);
     }
 }

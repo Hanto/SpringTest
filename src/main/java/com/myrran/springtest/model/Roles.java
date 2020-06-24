@@ -17,7 +17,7 @@ public class Roles
     private Long id;
     private String authority;
     //mapped by specifies the joining table
-    @ManyToMany(mappedBy = "roles", cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER) //, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
     private final Set<Users> users = new HashSet<>();
 
     // MAIN:

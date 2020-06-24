@@ -48,12 +48,12 @@ class Startup implements CommandLineRunner
 
         log.info("OBJECT: {}", object);
 
-        initAdmin();
+        //initAdmin();
     }
 
     public void initAdmin()
     {
-        Collection<Users> user = usersRepo.findByUsername("Admin");
+        Collection<Users> user = usersRepo.findByUsername("admin");
         Collection<Roles> role = rolesRepo.findByAuthority("ADMIN");
 
         if (role.isEmpty() && user.isEmpty())

@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Collection;
 import java.util.Collections;
 
-//@Transactional
 @SpringBootTest
 class SpringtestApplicationTests
 {
@@ -36,8 +35,8 @@ class SpringtestApplicationTests
 
         user.addRol(rol);
 
-        usersRepo.save(user);
         rolesRepo.save(rol); // not necessary with cascade persist/merge
+        usersRepo.save(user);
 
         Collection<Users> userResult = usersRepo.findByUsername("ivan");
         Collection<Roles> rolResult = rolesRepo.findByAuthority("Admin");
@@ -86,22 +85,26 @@ class SpringtestApplicationTests
 
     @Test public void pim()
     {
-        Collection<Users> user = usersRepo.findByUsername("Admin");
+        Collection<Users> user = usersRepo.findByUsername("admin");
         Collection<Roles> role = rolesRepo.findByAuthority("ADMIN");
 
-        if (role.isEmpty() && user.isEmpty())
-        {
-            Roles adminRol = new Roles();
-            adminRol.setAuthority("ADMIN");
-            adminRol = rolesRepo.save(adminRol);
 
-            Users adminUser = new Users();
-            adminUser.setEnabled(true);
-            adminUser.setUsername("admin");
-            adminUser.setEnabled(true);
-            adminUser.setPassword(encoder.encode("admin"));
-            adminUser.addRol(adminRol);
-            usersRepo.save(adminUser);
-        }
+        Roles adminRol = new Roles();
+        adminRol.setAuthority("ADMIN");
+        rolesRepo.save(adminRol);
+
+        Users adminUser = new Users();
+        adminUser.setEnabled(true);
+        adminUser.setUsername("admin");
+        adminUser.setEnabled(true);
+        adminUser.setPassword(encoder.encode("admin"));
+        adminUser.addRol(adminRol);
+        usersRepo.save(adminUser);
+
+        user = usersRepo.findByUsername("admin");
+        role = rolesRepo.findByAuthority("ADMIN");
+
+        System.out.println("done");
+
     }
 }
