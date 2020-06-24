@@ -60,11 +60,12 @@ class Startup implements CommandLineRunner
         {
             Roles adminRol = new Roles();
             adminRol.setAuthority("ADMIN");
-            //adminRol = rolesRepo.save(adminRol);
+            adminRol = rolesRepo.save(adminRol);
 
             Users adminUser = new Users();
             adminUser.setEnabled(true);
             adminUser.setUsername("admin");
+            adminUser.setEnabled(true);
             adminUser.setPassword(encoder.encode("admin"));
             adminUser.addRol(adminRol);
             usersRepo.save(adminUser);

@@ -17,7 +17,7 @@ public class Users
     private String password;
     private boolean enabled;
     // if joining table not specified, it automatically generates it
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany//(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable
     (
         name = "user_roles",
