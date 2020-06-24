@@ -8,4 +8,5 @@ import java.util.Collection;
 public interface GroupRepository extends JpaRepository<Group, Long>
 {
     Collection<Group> findByName(String name);
+    Collection<Group> findByNameLike(String name);
 }

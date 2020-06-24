@@ -4,6 +4,7 @@ import com.myrran.springtest.config.AppProperties;
 import com.myrran.springtest.model.Group;
 import com.myrran.springtest.model.User;
 import com.myrran.springtest.model.dtos.GroupDTO;
+import com.myrran.springtest.model.repo.GroupRepository;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class SpringtestApplicationTests
 {
+    private @Autowired GroupRepository groupRepository;
     private @Autowired ModelMapper modelMapper;
     private @Autowired AppProperties properties;
 
@@ -39,6 +41,7 @@ class SpringtestApplicationTests
 
 
         System.out.println("ENV: "+ properties.getEnvironment());
+
 
 
     }

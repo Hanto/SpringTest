@@ -34,7 +34,7 @@ class GroupController
     //--------------------------------------------------------------------------------------------------------
 
     @GetMapping("/groups")
-    Collection<GroupDTO> groups()
+    public Collection<GroupDTO> groups()
     {
         log.info("Request to submit all groups");
 
@@ -44,7 +44,7 @@ class GroupController
     }
 
     @GetMapping("/group/{id}")
-    ResponseEntity<?> getGroup(@PathVariable Long id)
+    public ResponseEntity<?> getGroup(@PathVariable Long id)
     {
         log.info("Request to submit group with the id: {}", id);
         Optional<Group> group = groupRepository.findById(id);
@@ -55,7 +55,7 @@ class GroupController
     }
 
     @PostMapping("/group")
-    ResponseEntity<GroupDTO> createGroup(@Validated @RequestBody GroupDTO groupDTO) throws URISyntaxException
+    public ResponseEntity<GroupDTO> createGroup(@Validated @RequestBody GroupDTO groupDTO) throws URISyntaxException
     {
         log.info("Request to create group: {}", groupDTO);
         Group result = groupRepository.save(dtoToGroup(groupDTO));
@@ -66,7 +66,7 @@ class GroupController
     }
 
     @PutMapping("/group")
-    ResponseEntity<GroupDTO> updateGroup(@Validated @RequestBody GroupDTO groupDTO)
+    public ResponseEntity<GroupDTO> updateGroup(@Validated @RequestBody GroupDTO groupDTO)
     {
         log.info("Request to update group: {}", groupDTO);
         Group result = groupRepository.save(dtoToGroup(groupDTO));
