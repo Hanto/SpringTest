@@ -9,6 +9,7 @@ import com.myrran.springtest.model.demo.Event;
 import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupRepo;
 import com.myrran.springtest.model.demo.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,29 @@ class SpringtestApplicationTests
     private @Autowired ModelMapper modelMapper;
     private @Autowired AppProperties properties;
     private @Autowired PasswordEncoder encoder;
+
+    // BEFORE:
+    //--------------------------------------------------------------------------------------------------------
+
+    @BeforeEach
+    public void before()
+    {
+        Collection<AppUsers> users = appUsersRepo.findByUsername("admin");
+        Collection<AppRoles> roles = appRolesRepo.findByAuthority("ADMIN");
+
+        if (!users.isEmpty())
+            users.forEach(user -> appUsersRepo.deleteById(user.getId()));
+
+        if (!roles.isEmpty())
+            roles.forEach(rol -> appRolesRepo.deleteById(rol.getId()));
+
+        users = appUsersRepo.findByUsername("admin");
+        roles = appRolesRepo.findByAuthority("ADMIN");
+
+    }
+
+    // TESTS:
+    //--------------------------------------------------------------------------------------------------------
 
     @Test public void contextLoads()
     {
@@ -94,7 +118,6 @@ class SpringtestApplicationTests
     {
         Collection<AppUsers> user = appUsersRepo.findByUsername("admin");
         Collection<AppRoles> role = appRolesRepo.findByAuthority("ADMIN");
-
 
         AppRoles adminRol = new AppRoles();
         adminRol.setAuthority("ADMIN");
