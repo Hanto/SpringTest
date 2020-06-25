@@ -1,8 +1,8 @@
 package com.myrran.springtest.web;
 
-import com.myrran.springtest.model.Group;
-import com.myrran.springtest.model.dtos.GroupDTO;
-import com.myrran.springtest.model.repo.GroupRepository;
+import com.myrran.springtest.model.demo.Group;
+import com.myrran.springtest.model.demo.GroupRepo;
+import com.myrran.springtest.model.demo.dtos.GroupDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 @RestController @RequestMapping("/api")
 class GroupController
 {
-    private final GroupRepository groupRepository;
+    private final GroupRepo groupRepo;
     private final ModelMapper modelMapper;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    public @Autowired GroupController(GroupRepository groupRepository, ModelMapper modelMapper)
-    {   this.groupRepository = groupRepository; this.modelMapper = modelMapper; }
+    public @Autowired GroupController(GroupRepo groupRepo, ModelMapper modelMapper)
+    {   this.groupRepo = groupRepo; this.modelMapper = modelMapper; }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class GroupController
     {
         log.info("Request to submit all groups");
 
-        return groupRepository.findAll().stream()
+        return groupRepo.findAll().stream()
             .map(this::groupToDTO)
             .collect(Collectors.toList());
     }
@@ -47,7 +47,7 @@ class GroupController
     public ResponseEntity<?> getGroup(@PathVariable Long id)
     {
         log.info("Request to submit group with the id: {}", id);
-        Optional<Group> group = groupRepository.findById(id);
+        Optional<Group> group = groupRepo.findById(id);
 
         return group
             .map(group1 -> ResponseEntity.ok().body(group1))
@@ -58,7 +58,7 @@ class GroupController
     public ResponseEntity<GroupDTO> createGroup(@Validated @RequestBody GroupDTO groupDTO) throws URISyntaxException
     {
         log.info("Request to create group: {}", groupDTO);
-        Group result = groupRepository.save(dtoToGroup(groupDTO));
+        Group result = groupRepo.save(dtoToGroup(groupDTO));
 
         return ResponseEntity
             .created(new URI("/api/group/" + result.getId()))
@@ -69,7 +69,7 @@ class GroupController
     public ResponseEntity<GroupDTO> updateGroup(@Validated @RequestBody GroupDTO groupDTO)
     {
         log.info("Request to update group: {}", groupDTO);
-        Group result = groupRepository.save(dtoToGroup(groupDTO));
+        Group result = groupRepo.save(dtoToGroup(groupDTO));
 
         return ResponseEntity
             .ok()
@@ -80,7 +80,7 @@ class GroupController
     public ResponseEntity<?> deleteGroup(@PathVariable Long id)
     {
         log.info("Request to delete group: {}", id);
-        groupRepository.deleteById(id);
+        groupRepo.deleteById(id);
 
         return ResponseEntity
             .ok()

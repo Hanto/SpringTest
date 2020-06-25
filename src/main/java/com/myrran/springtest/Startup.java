@@ -1,9 +1,9 @@
 package com.myrran.springtest;
 
-import com.myrran.springtest.model.Roles;
-import com.myrran.springtest.model.Users;
-import com.myrran.springtest.model.repo.RolesRepository;
-import com.myrran.springtest.model.repo.UsersRepository;
+import com.myrran.springtest.model.appusers.AppRoles;
+import com.myrran.springtest.model.appusers.AppRolesRepo;
+import com.myrran.springtest.model.appusers.AppUsers;
+import com.myrran.springtest.model.appusers.AppUsersRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,16 +17,16 @@ import java.util.Collection;
 @Component
 class Startup implements CommandLineRunner
 {
-    private final UsersRepository usersRepo;
-    private final RolesRepository rolesRepo;
+    private final AppUsersRepo appUsersRepo;
+    private final AppRolesRepo appRolesRepo;
     private @Autowired RestTemplate restTemplate;
     private @Autowired PasswordEncoder encoder;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    @Autowired public Startup(UsersRepository userRepo, RolesRepository rolesRepo)
-    {   this.usersRepo = userRepo; this.rolesRepo = rolesRepo; }
+    @Autowired public Startup(AppUsersRepo userRepo, AppRolesRepo appRolesRepo)
+    {   this.appUsersRepo = userRepo; this.appRolesRepo = appRolesRepo; }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -48,28 +48,34 @@ class Startup implements CommandLineRunner
 
         log.info("OBJECT: {}", object);
 
-        //initAdmin();
+        initAdmin();
     }
 
     public void initAdmin()
     {
-        Collection<Users> user = usersRepo.findByUsername("admin");
-        Collection<Roles> role = rolesRepo.findByAuthority("ADMIN");
+        Collection<AppUsers> user = appUsersRepo.findByUsername("admin");
+        Collection<AppRoles> role = appRolesRepo.findByAuthority("ADMIN");
 
         if (role.isEmpty() && user.isEmpty())
         {
-            Roles adminRol = new Roles();
+            AppRoles adminRol = new AppRoles();
             adminRol.setAuthority("ADMIN");
-            adminRol = rolesRepo.save(adminRol);
+            adminRol = appRolesRepo.save(adminRol);
 
-            Users adminUser = new Users();
+            AppUsers adminUser = new AppUsers();
             adminUser.setEnabled(true);
             adminUser.setUsername("admin");
             adminUser.setEnabled(true);
             adminUser.setPassword(encoder.encode("admin"));
             adminUser.addRol(adminRol);
-            usersRepo.save(adminUser);
+            appUsersRepo.save(adminUser);
         }
 
+        user = appUsersRepo.findByUsername("admin");
+        role = appRolesRepo.findByAuthority("ADMIN");
+
+        user.forEach(appUsers -> log.info("User: " + appUsers.getUsername()));
+        user.forEach(appUsers -> log.info("User: " + appUsers.getPassword()));
+        role.forEach(appRoles -> log.info("Rol: " + appRoles.getAuthority()));
     }
 }

@@ -17,21 +17,4 @@ public class AppConfig
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder)
     {   return builder.build(); }
-
-    /*@Bean
-    public DataSource dataSource() {
-
-        // no need shutdown, EmbeddedDatabaseFactoryBean will take care of this
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder
-            .setType(EmbeddedDatabaseType.DERBY) //.H2 or .DERBY
-            //.addScript("db/sql/create-db.sql")
-            //.addScript("db/sql/insert-data.sql")
-            .build();
-    }
-
-    @Bean
-    public JdbcTemplate getJdbcTemplate() {
-        return new JdbcTemplate(dataSource());
-    }*/
 }

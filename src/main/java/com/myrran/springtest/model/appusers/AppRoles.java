@@ -1,4 +1,4 @@
-package com.myrran.springtest.model;
+package com.myrran.springtest.model.appusers;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,26 +10,26 @@ import java.util.Set;
 
 //circular dependencies should be excluded from ToString & HashCodes
 @Data @EqualsAndHashCode(exclude = "users") @ToString(exclude = "users")
-@Entity @Table (name = "Authorities")
-public class Roles
+@Entity @Table (name = "authorities")
+public class AppRoles
 {
     @Id @GeneratedValue
     private Long id;
+    @Column(nullable = false, unique = true)
     private String authority;
-    //mapped by specifies the joining table
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER) //, cascade = { CascadeType.PERSIST, CascadeType.MERGE})
-    private final Set<Users> users = new HashSet<>();
+    private final Set<AppUsers> users = new HashSet<>();
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
 
-    public void addUser(Users user)
+    public void addUser(AppUsers user)
     {
         users.add(user);
         user.getRoles().add(this);
     }
 
-    public void removeUser(Users user)
+    public void removeUser(AppUsers user)
     {
         users.remove(user);
         user.getRoles().remove(this);

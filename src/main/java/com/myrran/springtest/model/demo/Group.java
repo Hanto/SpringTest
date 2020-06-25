@@ -1,4 +1,4 @@
-package com.myrran.springtest.model;
+package com.myrran.springtest.model.demo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.myrran.springtest.model.dtos;
+package com.myrran.springtest.model.demo.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

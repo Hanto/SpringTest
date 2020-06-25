@@ -1,4 +1,4 @@
-package com.myrran.springtest.web;
+package com.myrran.springtest.model.appusers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 @Slf4j
 @EnableWebSecurity
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter
+public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
     @Autowired
     private DataSource dataSource;
@@ -29,31 +29,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter
         auth.jdbcAuthentication()
             .dataSource(dataSource)
             .passwordEncoder(passwordEncoder())
-            .usersByUsernameQuery("select username, password, enabled from users where username=?")
+            .usersByUsernameQuery("select username, password, enabled from appusers where username = ?")
             .authoritiesByUsernameQuery(
                 "select u.username, a.authority " +
-                "from Authorities as a, Users as u, User_roles as r " +
+                "from Authorities as a, Appusers as u, appusers_to_appRoles as r " +
                 "where u.username = ? " +
-                "   and a.id = r.fk_rol " +
-                "   and u.id = r.fk_user");
+                "   and a.id = r.approlid " +
+                "   and u.id = r.appUserid");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        /*http.authorizeRequests()
-            .antMatchers("/h2-console/**").permitAll()
-            .antMatchers("/api/**").access("hasRole('ADMIN')")
-            .anyRequest().authenticated()
-            .and()
-            .formLogin();
-
-        http.csrf()
-            .ignoringAntMatchers("/h2-console/**");
-        http.headers()
-            .frameOptions()
-            .sameOrigin();*/
-
         http.formLogin();
 
         http.authorizeRequests()
