@@ -9,18 +9,23 @@ import com.myrran.springtest.model.demo.Event;
 import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupRepo;
 import com.myrran.springtest.model.demo.User;
+import com.myrran.springtest.model.food.Food;
+import com.myrran.springtest.model.food.FoodRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@Slf4j
 @SpringBootTest
-class SpringtestApplicationTests
+class GlobalTests
 {
     private @Autowired
     AppRolesRepo appRolesRepo;
@@ -31,6 +36,8 @@ class SpringtestApplicationTests
     private @Autowired ModelMapper modelMapper;
     private @Autowired AppProperties properties;
     private @Autowired PasswordEncoder encoder;
+    private @Autowired RestTemplate restTemplate;
+    private @Autowired FoodRepo foodRepo;
 
     // BEFORE:
     //--------------------------------------------------------------------------------------------------------
@@ -160,6 +167,36 @@ class SpringtestApplicationTests
 
         System.out.println("done");
 
+    }
+
+    @Test public void restTest()
+    {
+        String foodString1 = "https://api.nal.usda.gov/ndb/reports/?ndbno=786631&type=b&format=xml&api_key=DEMO_KEY";
+        String foodString2 = "https://api.nal.usda.gov/fdc/v1/food/786631?api_key=DEMO_KEY";
+
+        Food food = restTemplate.getForObject(foodString2, Food.class);
+
+        foodRepo.save(food);
+
+        log.info("FOOD: {}", food);
+
+        food = foodRepo.findById(food.getFdcId()).get();
+
+        log.info("FOOD: {}", food);
+    }
+
+    @Test public void foodDBTest()
+    {
+        String foodString1 = "https://api.nal.usda.gov/ndb/reports/?ndbno=786631&type=b&format=xml&api_key=DEMO_KEY";
+        String foodString2 = "https://api.nal.usda.gov/fdc/v1/food/786631?api_key=DEMO_KEY";
+
+        Food food = restTemplate.getForObject(foodString2, Food.class);
+
+        foodRepo.save(food);
+
+        Collection<Food>foods = foodRepo.findByDescriptionIgnoreCaseLike("%Apple%");
+
+        log.info("FOOD: {}", foods.isEmpty());
     }
 
 }
