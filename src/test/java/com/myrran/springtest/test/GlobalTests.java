@@ -10,7 +10,7 @@ import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupRepo;
 import com.myrran.springtest.model.demo.User;
 import com.myrran.springtest.model.food.Food;
-import com.myrran.springtest.model.food.FoodRepo;
+import com.myrran.springtest.model.food.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,8 @@ class GlobalTests
     private @Autowired AppProperties properties;
     private @Autowired PasswordEncoder encoder;
     private @Autowired RestTemplate restTemplate;
-    private @Autowired FoodRepo foodRepo;
+    private @Autowired
+    FoodDAO foodDAO;
 
     // BEFORE:
     //--------------------------------------------------------------------------------------------------------
@@ -176,11 +177,11 @@ class GlobalTests
 
         Food food = restTemplate.getForObject(foodString2, Food.class);
 
-        foodRepo.save(food);
+        foodDAO.save(food);
 
         log.info("FOOD: {}", food);
 
-        food = foodRepo.findById(food.getFdcId()).get();
+        food = foodDAO.findById(food.getFdcId()).get();
 
         log.info("FOOD: {}", food);
     }
@@ -192,9 +193,9 @@ class GlobalTests
 
         Food food = restTemplate.getForObject(foodString2, Food.class);
 
-        foodRepo.save(food);
+        foodDAO.save(food);
 
-        Collection<Food>foods = foodRepo.findByDescriptionIgnoreCaseLike("%Apple%");
+        Collection<Food>foods = foodDAO.findByNutrient("Protein");
 
         log.info("FOOD: {}", foods.isEmpty());
     }

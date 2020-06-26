@@ -4,6 +4,8 @@ import com.myrran.springtest.model.appusers.AppRoles;
 import com.myrran.springtest.model.appusers.AppRolesRepo;
 import com.myrran.springtest.model.appusers.AppUsers;
 import com.myrran.springtest.model.appusers.AppUsersRepo;
+import com.myrran.springtest.model.food.Food;
+import com.myrran.springtest.model.food.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -21,6 +23,8 @@ class Startup implements CommandLineRunner
     private final AppRolesRepo appRolesRepo;
     private @Autowired RestTemplate restTemplate;
     private @Autowired PasswordEncoder encoder;
+    private @Autowired
+    FoodDAO foodDAO;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
@@ -77,5 +81,24 @@ class Startup implements CommandLineRunner
         user.forEach(appUsers -> log.info("User: " + appUsers.getUsername()));
         user.forEach(appUsers -> log.info("User: " + appUsers.getPassword()));
         role.forEach(appRoles -> log.info("Rol: " + appRoles.getAuthority()));
+
+        Collection<Food>foods = foodDAO.findByNutrient("Caffeine");
+
+        foods.forEach(food -> log.info("Foods with Caffeine: {}", food.getDescription()));
+
+        //importFood();
+    }
+
+    private void importFood()
+    {
+        for (int i= 0; i<=50; i++)
+        {
+            String foodID = Integer.toString (786000 + i);
+            String query = "https://api.nal.usda.gov/fdc/v1/food/" + foodID + "?api_key=OUfth2dJDUjjGQSDT5v1WZ2yvP84eBzTvX0aFKJ5";
+            Food food = restTemplate.getForObject(query, Food.class);
+            foodDAO.save(food);
+
+            log.info("FOOD SAVED: {}", food.getDescription());
+        }
     }
 }
