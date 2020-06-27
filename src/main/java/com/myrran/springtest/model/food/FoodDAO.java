@@ -14,12 +14,12 @@ public interface FoodDAO extends JpaRepository<Food, Long>
     (
         nativeQuery = true,
         value =
-        "select * from NUTRIENTS as n, FOOD_NUTRIENTS as fn, " +
+        "select * from NUTRIENTS as n, FOOD_NUTRIENTS as fn, \n" +
         "    FOOD_TO_FOOD_NUTRIENT as ffn, FOODS as f \n" +
-        "where\n" +
-        "    n.ID = fn.NUTRIENT_ID and\n" +
-        "    n.NAME = ?1 and\n" +
-        "    fn.ID = ffn.FOOD_NUTRIENTS_ID and\n" +
+        "where \n" +
+        "    n.ID = fn.NUTRIENT_ID and \n" +
+        "    n.NAME = ?1 and \n" +
+        "    fn.ID = ffn.FOOD_NUTRIENTS_ID and \n" +
         "    ffn.FOOD_FDC_ID = f.FDC_ID;"
     )
     Collection<Food>findByNutrient(String nutrientName);

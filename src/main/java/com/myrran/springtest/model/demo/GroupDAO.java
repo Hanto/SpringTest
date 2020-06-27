@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
 
-public interface GroupRepo extends JpaRepository<Group, Long>
+public interface GroupDAO extends JpaRepository<Group, Long>
 {
     Collection<Group> findByName(String name);
     Collection<Group> findByNameLike(String name);

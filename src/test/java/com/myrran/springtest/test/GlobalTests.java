@@ -2,12 +2,12 @@ package com.myrran.springtest.test;
 
 import com.myrran.springtest.config.AppProperties;
 import com.myrran.springtest.model.appusers.AppRoles;
-import com.myrran.springtest.model.appusers.AppRolesRepo;
+import com.myrran.springtest.model.appusers.AppRolesDAO;
+import com.myrran.springtest.model.appusers.AppUserDAO;
 import com.myrran.springtest.model.appusers.AppUsers;
-import com.myrran.springtest.model.appusers.AppUsersRepo;
 import com.myrran.springtest.model.demo.Event;
 import com.myrran.springtest.model.demo.Group;
-import com.myrran.springtest.model.demo.GroupRepo;
+import com.myrran.springtest.model.demo.GroupDAO;
 import com.myrran.springtest.model.demo.User;
 import com.myrran.springtest.model.food.Food;
 import com.myrran.springtest.model.food.FoodDAO;
@@ -28,11 +28,11 @@ import java.util.Collections;
 class GlobalTests
 {
     private @Autowired
-    AppRolesRepo appRolesRepo;
+    AppRolesDAO appRolesDAO;
     private @Autowired
-    AppUsersRepo appUsersRepo;
+    AppUserDAO appUsersDAO;
     private @Autowired
-    GroupRepo groupRepo;
+    GroupDAO groupRepo;
     private @Autowired ModelMapper modelMapper;
     private @Autowired AppProperties properties;
     private @Autowired PasswordEncoder encoder;
@@ -46,17 +46,17 @@ class GlobalTests
     @BeforeEach
     public void before()
     {
-        Collection<AppUsers> users = appUsersRepo.findByUsername("admin");
-        Collection<AppRoles> roles = appRolesRepo.findByAuthority("ADMIN");
+        Collection<AppUsers> users = appUsersDAO.findByUsername("admin");
+        Collection<AppRoles> roles = appRolesDAO.findByAuthority("ADMIN");
 
         if (!users.isEmpty())
-            users.forEach(user -> appUsersRepo.deleteById(user.getId()));
+            users.forEach(user -> appUsersDAO.deleteById(user.getId()));
 
         if (!roles.isEmpty())
-            roles.forEach(rol -> appRolesRepo.deleteById(rol.getId()));
+            roles.forEach(rol -> appRolesDAO.deleteById(rol.getId()));
 
-        users = appUsersRepo.findByUsername("admin");
-        roles = appRolesRepo.findByAuthority("ADMIN");
+        users = appUsersDAO.findByUsername("admin");
+        roles = appRolesDAO.findByAuthority("ADMIN");
 
     }
 
@@ -74,22 +74,22 @@ class GlobalTests
 
         user.addRol(rol);
 
-        appRolesRepo.save(rol); // not necessary with cascade persist/merge
-        appUsersRepo.save(user);
+        appRolesDAO.save(rol); // not necessary with cascade persist/merge
+        appUsersDAO.save(user);
 
-        Collection<AppUsers> userResult = appUsersRepo.findByUsername("ivan");
-        Collection<AppRoles> rolResult = appRolesRepo.findByAuthority("Admin");
+        Collection<AppUsers> userResult = appUsersDAO.findByUsername("ivan");
+        Collection<AppRoles> rolResult = appRolesDAO.findByAuthority("Admin");
 
         System.out.println("done");
 
         AppUsers deletedUser = userResult.stream().findFirst().orElse(null);
 
         deletedUser.removeRol(rol);
-        deletedUser = appUsersRepo.save(deletedUser);
+        deletedUser = appUsersDAO.save(deletedUser);
 
-        appUsersRepo.delete(deletedUser);
+        appUsersDAO.delete(deletedUser);
 
-        userResult = appUsersRepo.findByUsername("ivan");
+        userResult = appUsersDAO.findByUsername("ivan");
 
         System.out.println("done");
     }
@@ -124,12 +124,12 @@ class GlobalTests
 
     @Test public void pim()
     {
-        Collection<AppUsers> user = appUsersRepo.findByUsername("admin");
-        Collection<AppRoles> role = appRolesRepo.findByAuthority("ADMIN");
+        Collection<AppUsers> user = appUsersDAO.findByUsername("admin");
+        Collection<AppRoles> role = appRolesDAO.findByAuthority("ADMIN");
 
         AppRoles adminRol = new AppRoles();
         adminRol.setAuthority("ADMIN");
-        appRolesRepo.save(adminRol);
+        appRolesDAO.save(adminRol);
 
         AppUsers adminUser = new AppUsers();
         adminUser.setEnabled(true);
@@ -137,10 +137,10 @@ class GlobalTests
         adminUser.setEnabled(true);
         adminUser.setPassword(encoder.encode("admin"));
         adminUser.addRol(adminRol);
-        appUsersRepo.save(adminUser);
+        appUsersDAO.save(adminUser);
 
-        user = appUsersRepo.findByUsername("admin");
-        role = appRolesRepo.findByAuthority("ADMIN");
+        user = appUsersDAO.findByUsername("admin");
+        role = appRolesDAO.findByAuthority("ADMIN");
 
         System.out.println("done");
 
@@ -148,23 +148,23 @@ class GlobalTests
 
     @Test public void pom()
     {
-        Collection<AppUsers> user = appUsersRepo.findByUsername("admin");
-        Collection<AppRoles> role = appRolesRepo.findByAuthority("ADMIN");
+        Collection<AppUsers> user = appUsersDAO.findByUsername("admin");
+        Collection<AppRoles> role = appRolesDAO.findByAuthority("ADMIN");
 
         AppUsers adminUser = new AppUsers();
         adminUser.setEnabled(true);
         adminUser.setUsername("admin");
         adminUser.setEnabled(true);
         adminUser.setPassword(encoder.encode("admin"));
-        adminUser = appUsersRepo.save(adminUser);
+        adminUser = appUsersDAO.save(adminUser);
 
         AppRoles adminRol = new AppRoles();
         adminRol.setAuthority("ADMIN");
         adminRol.addUser(adminUser);
-        appRolesRepo.save(adminRol);
+        appRolesDAO.save(adminRol);
 
-        user = appUsersRepo.findByUsername("admin");
-        role = appRolesRepo.findByAuthority("ADMIN");
+        user = appUsersDAO.findByUsername("admin");
+        role = appRolesDAO.findByAuthority("ADMIN");
 
         System.out.println("done");
 

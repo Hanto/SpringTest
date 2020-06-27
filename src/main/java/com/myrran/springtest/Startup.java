@@ -1,9 +1,9 @@
 package com.myrran.springtest;
 
 import com.myrran.springtest.model.appusers.AppRoles;
-import com.myrran.springtest.model.appusers.AppRolesRepo;
+import com.myrran.springtest.model.appusers.AppRolesDAO;
+import com.myrran.springtest.model.appusers.AppUserDAO;
 import com.myrran.springtest.model.appusers.AppUsers;
-import com.myrran.springtest.model.appusers.AppUsersRepo;
 import com.myrran.springtest.model.food.Food;
 import com.myrran.springtest.model.food.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +19,8 @@ import java.util.Collection;
 @Component
 class Startup implements CommandLineRunner
 {
-    private final AppUsersRepo appUsersRepo;
-    private final AppRolesRepo appRolesRepo;
+    private final AppUserDAO appUsersRepo;
+    private final AppRolesDAO appRolesDAO;
     private @Autowired RestTemplate restTemplate;
     private @Autowired PasswordEncoder encoder;
     private @Autowired
@@ -29,8 +29,8 @@ class Startup implements CommandLineRunner
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    @Autowired public Startup(AppUsersRepo userRepo, AppRolesRepo appRolesRepo)
-    {   this.appUsersRepo = userRepo; this.appRolesRepo = appRolesRepo; }
+    @Autowired public Startup(AppUserDAO userRepo, AppRolesDAO appRolesDAO)
+    {   this.appUsersRepo = userRepo; this.appRolesDAO = appRolesDAO; }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -58,13 +58,13 @@ class Startup implements CommandLineRunner
     public void initAdmin()
     {
         Collection<AppUsers> user = appUsersRepo.findByUsername("admin");
-        Collection<AppRoles> role = appRolesRepo.findByAuthority("ADMIN");
+        Collection<AppRoles> role = appRolesDAO.findByAuthority("ADMIN");
 
         if (role.isEmpty() && user.isEmpty())
         {
             AppRoles adminRol = new AppRoles();
             adminRol.setAuthority("ADMIN");
-            adminRol = appRolesRepo.save(adminRol);
+            adminRol = appRolesDAO.save(adminRol);
 
             AppUsers adminUser = new AppUsers();
             adminUser.setEnabled(true);
@@ -76,7 +76,7 @@ class Startup implements CommandLineRunner
         }
 
         user = appUsersRepo.findByUsername("admin");
-        role = appRolesRepo.findByAuthority("ADMIN");
+        role = appRolesDAO.findByAuthority("ADMIN");
 
         user.forEach(appUsers -> log.info("User: " + appUsers.getUsername()));
         user.forEach(appUsers -> log.info("User: " + appUsers.getPassword()));

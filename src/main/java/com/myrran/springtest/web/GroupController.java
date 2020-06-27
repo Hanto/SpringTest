@@ -1,7 +1,7 @@
 package com.myrran.springtest.web;
 
 import com.myrran.springtest.model.demo.Group;
-import com.myrran.springtest.model.demo.GroupRepo;
+import com.myrran.springtest.model.demo.GroupDAO;
 import com.myrran.springtest.model.demo.dtos.GroupDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @RestController @RequestMapping("/api")
 class GroupController
 {
-    private final GroupRepo groupRepo;
+    private final GroupDAO groupRepo;
     private final ModelMapper modelMapper;
 
     // BUILDER:
     //--------------------------------------------------------------------------------------------------------
 
-    public @Autowired GroupController(GroupRepo groupRepo, ModelMapper modelMapper)
+    public @Autowired GroupController(GroupDAO groupRepo, ModelMapper modelMapper)
     {   this.groupRepo = groupRepo; this.modelMapper = modelMapper; }
 
     // MAIN:
