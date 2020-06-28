@@ -6,7 +6,7 @@ import lombok.Data;
 import org.modelmapper.PropertyMap;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -21,9 +21,17 @@ public class FoodDTO
     // MAPPINGS:
     //--------------------------------------------------------------------------------------------------------
 
-    public static Collection<PropertyMap<?, ?>> getMappings()
+    public static Collection<PropertyMap> getMappings()
     {
-        PropertyMap<FoodNutrient, FoodNutrientDTO> foodNutrientMappings = new PropertyMap <FoodNutrient, FoodNutrientDTO>()
+        Set<PropertyMap>mappings = new HashSet<>();
+        mappings.add(mapFoodNutrientToDTO());
+        mappings.add(mapFoodNutrientToEntity());
+        return mappings;
+    }
+
+    private static PropertyMap<FoodNutrient, FoodNutrientDTO> mapFoodNutrientToDTO()
+    {
+        return new PropertyMap <FoodNutrient, FoodNutrientDTO>()
         {
             protected void configure()
             {
@@ -36,7 +44,22 @@ public class FoodDTO
                 map().setUnitName(source.getNutrient().getUnitName());
             }
         };
+    }
 
-        return Collections.singleton(foodNutrientMappings);
+    private static PropertyMap<FoodNutrientDTO, FoodNutrient> mapFoodNutrientToEntity()
+    {
+        return new PropertyMap <FoodNutrientDTO, FoodNutrient>()
+        {
+            protected void configure()
+            {
+                map().setId(source.getId());
+                map().setAmount(source.getAmount());
+                map().getNutrient().setId(source.getId());
+                map().getNutrient().setNumber(source.getNumber());
+                map().getNutrient().setName(source.getName());
+                map().getNutrient().setRank(source.getRank());
+                map().getNutrient().setUnitName(source.getUnitName());
+            }
+        };
     }
 }
