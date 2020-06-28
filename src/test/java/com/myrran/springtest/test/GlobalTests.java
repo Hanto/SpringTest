@@ -196,7 +196,7 @@ class GlobalTests
 
         foodDAO.save(food);
 
-        Collection<Food>foods = foodDAO.findByNutrientName("Protein");
+        Collection<Food>foods = foodDAO.findByNutrientName("Protein", 1, 5);
 
         log.info("FOOD: {}", foods.isEmpty());
     }
@@ -209,7 +209,7 @@ class GlobalTests
 
         foodDAO.save(food);
 
-        Food foodEntity = foodDAO.findByNutrientName("Vitamin A%").stream().findFirst().orElse(new Food());
+        Food foodEntity = foodDAO.findByNutrientName("Vitamin A%", 1, 5).stream().findFirst().orElse(new Food());
         FoodDTO dto = modelMapper.map(foodEntity, FoodDTO.class);
 
         log.info("FOOD: {}", dto.toString());

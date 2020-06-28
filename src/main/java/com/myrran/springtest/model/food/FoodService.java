@@ -9,8 +9,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class FoodService
 {
-    private @Autowired FoodDAO foodDAO;
-    private @Autowired ModelMapper modelMapper;
+    private final FoodDAO foodDAO;
+    private final ModelMapper modelMapper;
+
+    public FoodService(FoodDAO foodDAO, ModelMapper modelMapper)
+    {
+        this.foodDAO = foodDAO;
+        this.modelMapper = modelMapper;
+    }
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------

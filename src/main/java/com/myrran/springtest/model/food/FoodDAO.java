@@ -23,9 +23,10 @@ public interface FoodDAO extends JpaRepository<Food, Long>
         "    fn.AMOUNT > 0 and \n" +
         "    fn.ID = ffn.FOOD_NUTRIENTS_ID and \n" +
         "    ffn.FOOD_FDC_ID = f.FDC_ID \n" +
-        "order by fn.AMOUNT desc;"
+        "order by fn.AMOUNT desc \n" +
+        "offset ?3 * (?2 - 1) rows fetch next ?3 rows only;"
     )
-    Collection<Food>findByNutrientName(String nutrientName);
+    Collection<Food>findByNutrientName(String nutrientName, int page, int pageSize);
 
     @Query
     (
@@ -39,7 +40,8 @@ public interface FoodDAO extends JpaRepository<Food, Long>
         "    fn.AMOUNT > 0 and \n" +
         "    fn.ID = ffn.FOOD_NUTRIENTS_ID and \n" +
         "    ffn.FOOD_FDC_ID = f.FDC_ID \n" +
-        "order by fn.AMOUNT desc;"
+        "order by fn.AMOUNT desc \n" +
+        "offset ?3 * (?2 - 1) rows fetch next ?3 rows only;"
     )
-    Collection<Food>findByNutrientID(Long nutriendID);
+    Collection<Food>findByNutrientID(Long nutriendID, int page, int pageSize);
 }

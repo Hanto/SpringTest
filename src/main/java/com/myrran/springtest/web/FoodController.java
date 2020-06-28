@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController @RequestMapping("/api")
 public class FoodController
 {
-    private @Autowired FoodService foodService;
+    private final FoodService foodService;
+
+    public FoodController(FoodService foodService)
+    {   this.foodService = foodService;}
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
 
     @GetMapping("/food/{id}")
-    public ResponseEntity getFood(@PathVariable Long id)
+    public ResponseEntity<?> getFood(@PathVariable Long id)
     {
         log.info("Request to submit food with the id: {}", id);
         FoodDTO dto = foodService.getFoodDTOByID(id);

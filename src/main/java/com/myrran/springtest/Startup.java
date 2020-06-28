@@ -82,7 +82,7 @@ class Startup implements CommandLineRunner
         user.forEach(appUsers -> log.info("User: " + appUsers.getPassword()));
         role.forEach(appRoles -> log.info("Rol: " + appRoles.getAuthority()));
 
-        Collection<Food>foods = foodDAO.findByNutrientName("Caffeine");
+        Collection<Food>foods = foodDAO.findByNutrientName("Caffeine", 1, 5);
 
         foods.forEach(food -> log.info("Foods with Caffeine: {}", food.getDescription()));
 

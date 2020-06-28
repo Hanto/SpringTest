@@ -21,9 +21,9 @@ public class FoodDTO
     // MAPPINGS:
     //--------------------------------------------------------------------------------------------------------
 
-    public static Collection<PropertyMap> getMappings()
+    public static Collection<PropertyMap<?,?>> getMappings()
     {
-        Set<PropertyMap>mappings = new HashSet<>();
+        Set<PropertyMap<?,?>>mappings = new HashSet<>();
         mappings.add(mapFoodNutrientToDTO());
         mappings.add(mapFoodNutrientToEntity());
         return mappings;
