@@ -1,5 +1,6 @@
 package com.myrran.springtest.config;
 
+import com.myrran.springtest.model.food.dtos.FoodDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,11 @@ public class AppConfig
 {
     @Bean @Scope("singleton")
     public ModelMapper modelMapper()
-    {   return new ModelMapper(); }
+    {
+        ModelMapper modelMapper = new ModelMapper();
+        FoodDTO.getMappings().forEach(modelMapper::addMappings);
+        return modelMapper;
+    }
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder)

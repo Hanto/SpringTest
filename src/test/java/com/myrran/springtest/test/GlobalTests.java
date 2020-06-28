@@ -9,8 +9,9 @@ import com.myrran.springtest.model.demo.Event;
 import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupDAO;
 import com.myrran.springtest.model.demo.User;
-import com.myrran.springtest.model.food.Food;
+import com.myrran.springtest.model.food.entities.Food;
 import com.myrran.springtest.model.food.FoodDAO;
+import com.myrran.springtest.model.food.dtos.FoodDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -195,9 +196,22 @@ class GlobalTests
 
         foodDAO.save(food);
 
-        Collection<Food>foods = foodDAO.findByNutrient("Protein");
+        Collection<Food>foods = foodDAO.findByNutrientName("Protein");
 
         log.info("FOOD: {}", foods.isEmpty());
     }
 
+    @Test public void foodToDTOTest()
+    {
+        String foodString2 = "https://api.nal.usda.gov/fdc/v1/food/786631?api_key=DEMO_KEY";
+
+        Food food = restTemplate.getForObject(foodString2, Food.class);
+
+        foodDAO.save(food);
+
+        Food foodEntity = foodDAO.findByNutrientName("Vitamin A%").stream().findFirst().orElse(new Food());
+        FoodDTO dto = modelMapper.map(foodEntity, FoodDTO.class);
+
+        log.info("FOOD: {}", dto.toString());
+    }
 }

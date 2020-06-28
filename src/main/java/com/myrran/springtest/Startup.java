@@ -4,7 +4,7 @@ import com.myrran.springtest.model.appusers.AppRoles;
 import com.myrran.springtest.model.appusers.AppRolesDAO;
 import com.myrran.springtest.model.appusers.AppUserDAO;
 import com.myrran.springtest.model.appusers.AppUsers;
-import com.myrran.springtest.model.food.Food;
+import com.myrran.springtest.model.food.entities.Food;
 import com.myrran.springtest.model.food.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +82,7 @@ class Startup implements CommandLineRunner
         user.forEach(appUsers -> log.info("User: " + appUsers.getPassword()));
         role.forEach(appRoles -> log.info("Rol: " + appRoles.getAuthority()));
 
-        Collection<Food>foods = foodDAO.findByNutrient("Caffeine");
+        Collection<Food>foods = foodDAO.findByNutrientName("Caffeine");
 
         foods.forEach(food -> log.info("Foods with Caffeine: {}", food.getDescription()));
 

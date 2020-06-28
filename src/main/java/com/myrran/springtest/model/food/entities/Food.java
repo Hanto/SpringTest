@@ -1,4 +1,4 @@
-package com.myrran.springtest.model.food;
+package com.myrran.springtest.model.food.entities;
 
 import lombok.Data;
 
