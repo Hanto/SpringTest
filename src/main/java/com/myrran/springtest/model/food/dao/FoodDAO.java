@@ -1,4 +1,4 @@
-package com.myrran.springtest.model.food;
+package com.myrran.springtest.model.food.dao;
 
 import com.myrran.springtest.model.food.entities.Food;
 import org.springframework.data.jpa.repository.JpaRepository;

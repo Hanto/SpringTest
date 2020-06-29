@@ -1,13 +1,12 @@
-package com.myrran.springtest.model.food;
+package com.myrran.springtest.model.food.services;
 
+import com.myrran.springtest.model.food.dao.FoodDAO;
 import com.myrran.springtest.model.food.dtos.FoodDTO;
 import com.myrran.springtest.model.food.entities.Food;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Service

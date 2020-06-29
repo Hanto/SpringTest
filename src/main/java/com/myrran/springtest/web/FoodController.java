@@ -1,9 +1,10 @@
 package com.myrran.springtest.web;
 
-import com.myrran.springtest.model.food.FoodService;
+import com.myrran.springtest.model.food.services.FoodService;
+import com.myrran.springtest.model.food.services.NutrientService;
 import com.myrran.springtest.model.food.dtos.FoodDTO;
+import com.myrran.springtest.model.food.dtos.NutrientDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +16,14 @@ import java.util.Map;
 public class FoodController
 {
     private final FoodService foodService;
+    private final NutrientService nutrientService;
 
-    public FoodController(FoodService foodService)
-    {   this.foodService = foodService;}
+    public FoodController(FoodService foodService, NutrientService nutrientService)
+    {
+        this.foodService = foodService;
+        this.nutrientService = nutrientService;
+    }
+
 
     // MAIN:
     //--------------------------------------------------------------------------------------------------------
@@ -41,8 +47,17 @@ public class FoodController
         String pageSize = allParams.get("pagesize");
         log.info("param nutrient: {} {} {}", nutrient, page, pageSize);
 
-        Integer pageI = Integer.parseInt(page);
-        Integer pageSizeI = Integer.parseInt(pageSize);
+        int pageI = Integer.parseInt(page);
+        int pageSizeI = Integer.parseInt(pageSize);
         return foodService.getFoodDTOByNutrient(nutrient, pageI, pageSizeI);
+    }
+
+    @GetMapping("/nutrient/search")
+    public Collection<NutrientDTO>getNutrient(@RequestParam Map<String,String> allParams)
+    {
+        String nutrientName = allParams.get("nutrient");
+        log.info("param nutrient: {}", nutrientName);
+
+        return nutrientService.getFoodDTOByNutrient(nutrientName);
     }
 }

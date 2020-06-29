@@ -10,7 +10,7 @@ import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupDAO;
 import com.myrran.springtest.model.demo.User;
 import com.myrran.springtest.model.food.entities.Food;
-import com.myrran.springtest.model.food.FoodDAO;
+import com.myrran.springtest.model.food.dao.FoodDAO;
 import com.myrran.springtest.model.food.dtos.FoodDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;

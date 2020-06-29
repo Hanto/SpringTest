@@ -5,7 +5,7 @@ import com.myrran.springtest.model.appusers.AppRolesDAO;
 import com.myrran.springtest.model.appusers.AppUserDAO;
 import com.myrran.springtest.model.appusers.AppUsers;
 import com.myrran.springtest.model.food.entities.Food;
-import com.myrran.springtest.model.food.FoodDAO;
+import com.myrran.springtest.model.food.dao.FoodDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
