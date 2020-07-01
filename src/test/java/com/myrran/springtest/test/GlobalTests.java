@@ -9,9 +9,11 @@ import com.myrran.springtest.model.demo.Event;
 import com.myrran.springtest.model.demo.Group;
 import com.myrran.springtest.model.demo.GroupDAO;
 import com.myrran.springtest.model.demo.User;
-import com.myrran.springtest.model.food.entities.Food;
 import com.myrran.springtest.model.food.dao.FoodDAO;
+import com.myrran.springtest.model.food.dao.NutrientDAO;
 import com.myrran.springtest.model.food.dtos.FoodDTO;
+import com.myrran.springtest.model.food.entities.Food;
+import com.myrran.springtest.model.food.entities.Nutrient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,8 +23,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -38,8 +42,8 @@ class GlobalTests
     private @Autowired AppProperties properties;
     private @Autowired PasswordEncoder encoder;
     private @Autowired RestTemplate restTemplate;
-    private @Autowired
-    FoodDAO foodDAO;
+    private @Autowired FoodDAO foodDAO;
+    private @Autowired NutrientDAO nutrientDAO;
 
     // BEFORE:
     //--------------------------------------------------------------------------------------------------------
@@ -213,5 +217,27 @@ class GlobalTests
         FoodDTO dto = modelMapper.map(foodEntity, FoodDTO.class);
 
         log.info("FOOD: {}", dto.toString());
+    }
+
+    @Test public void foodsByNutriendID()
+    {
+        String foodString2 = "https://api.nal.usda.gov/fdc/v1/food/786006?api_key=DEMO_KEY";
+
+        Food food = restTemplate.getForObject(foodString2, Food.class);
+
+        foodDAO.save(food);
+
+        List<Long>nutriendIDs = new ArrayList<>();
+        nutriendIDs.add(1093L);
+        nutriendIDs.add(1005L);
+        nutriendIDs.add(1008L);
+        nutriendIDs.add(1089L);
+        nutriendIDs.add(1186L);
+        nutriendIDs.add(1265L);
+
+        Collection<Nutrient>nutrients = nutrientDAO.findByNameLikeIgnoreCase("%P");
+
+        Collection<Food>foods = foodDAO.findByAllNutrientID(nutriendIDs, 1, 50);
+        foods.forEach(food1 -> System.out.println("RETRIVED FOODS: " + food1.getDescription()));
     }
 }

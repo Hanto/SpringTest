@@ -15,6 +15,7 @@ public class FoodDTO
     private long fdcId;
     private String foodClass;
     private String description;
+    private String amounts;
     private Set<FoodNutrientDTO> foodNutrients;
     private Set<FoodPortions> foodPortions;
 

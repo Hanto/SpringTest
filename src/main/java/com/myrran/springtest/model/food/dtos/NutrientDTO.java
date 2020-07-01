@@ -6,8 +6,8 @@ import lombok.Data;
 public class NutrientDTO
 {
     private long id;
-    //private String number;
+    private String number;
     private String name;
-    //private int rank;
-    //private String unitName;
+    private int rank;
+    private String unitName;
 }
